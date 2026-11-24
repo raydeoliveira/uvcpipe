@@ -1,5 +1,10 @@
 # Changelog — uvcpipe
 
+## 0.2.0 — 2026-11-24
+- **Free Core Expansion ("Free Eyes, Paid Hands")**: `capture`, `view` (localhost MJPEG KVM viewer), `uvcpipe mcp` startup, `uvcpipe_probe`, `uvcpipe_capture_frame`, `uvcpipe_hid_release_all`, and all `dry_run: true` HID previews now run without a license key; Commercial Pro (`$19` one-time, `UVCP` prefix) is required only for live CH9329 HID writes (`key`, `type`, `mouse`, and MCP `dry_run: false`).
+- **In-CLI Upgrade & Conversion Links**: `LICENSE_REQUIRED` (`exit 5`) and `uvcpipe license status` messages now surface the live Polar checkout URL directly, alongside a `~$20` MS2109/MS2130 + CH9329 BOM, 10-second `claude mcp add` quickstart, and GitHub hardware-report issue templates.
+- **Test Coverage**: Expanded M4, M5, Python integration, Tier-5 adversarial, and E2E `T3-06` suites to test both unlicensed Free Eyes execution and unlicensed live-HID `exit 5` fail-closed behavior.
+
 ## 0.1.0 — 2026-11-24
 - **Foundation & Codec**: Clean-room C17 `Makefile` (`clang`/`gcc`/MinGW + `-DOSS_EDITION`), `include/uvcpipe_{domain,ports,core,adapters}.h`, USB HID Usage Page `0x07` scancodes, CH9329 Mode 0 packet codec/decoder, bounded `UvcStrBuf`, RFC 4648 base64, strict RFC 8259 JSON DOM parser, and baseline JFIF JPEG encoder + MJPEG validator.
 - **UVC Capture & Snapshot Storage**: `capture_svc`, deterministic `sim_uvc` test-card/fixture adapter, macOS AVFoundation (`uvc_macos.m` with `activeFormat` lock & TCC check), Linux V4L2 (`uvc_linux.c` MJPEG/YUYV/RGB24 & `EINTR` signal abort), Windows Media Foundation (`uvc_win32.c` dynamic media-type refresh & bottom-up BGR24->RGB24 unpack), and `lstat()`/`FILE_ATTRIBUTE_REPARSE_POINT` atomic storage (`snapshot_fs.c`, `snapshot_fs_win32.c`).

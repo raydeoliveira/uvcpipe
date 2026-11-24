@@ -1,12 +1,12 @@
 ---
 name: uvcpipe
 description: >-
-  Cross-platform USB UVC HDMI capture, localhost live MJPEG viewer, and CH9329
-  serial HID bare-metal keyboard/mouse CLI and stdio MCP server (macOS, Linux,
-  Windows). Use when probing capture dongles or CH9329 cables, grabbing BIOS/OS
-  HDMI frames (--format jpeg|ppm|base64), serving the 127.0.0.1 MJPEG viewer,
-  sending HID keys/text/mouse input with --dry-run and SIGINT release-all safety,
-  or invoking uvcpipe mcp tools.
+  Cross-platform USB UVC HDMI capture, localhost live MJPEG KVM viewer, and
+  CH9329 serial HID bare-metal keyboard/mouse CLI and stdio MCP server (macOS,
+  Linux, Windows). Free Core unlocks probing, MS2109/MS2130/ShadowCast HDMI
+  capture (--format jpeg|ppm|base64), 127.0.0.1 MJPEG viewer, --dry-run HID,
+  release-all, and read-only/dry-run uvcpipe mcp; Pro ($19) unlocks live CH9329
+  HID input.
 ---
 
 # Skill: uvcpipe (`uvcpipe`)
@@ -22,8 +22,8 @@ uvcpipe --version --json
 uvcpipe --help --json
 ```
 
-## Safe Probe, Capture & Live Viewer Workflow
-1. Discover attached UVC dongles and CH9329 cables (or deterministic `--sim` / `--fixture` devices, always Free):
+## Safe Probe, Capture & Live Viewer Workflow (Free Core)
+1. Discover attached UVC dongles and CH9329 cables (or deterministic `--sim` / `--fixture` devices):
    ```bash
    uvcpipe probe --json
    uvcpipe probe --sim --json
@@ -40,18 +40,18 @@ uvcpipe --help --json
    ```
 
 ## Safe Bare-Metal HID Workflow (CH9329)
-1. Preview planned CH9329 Mode 0 hex frames first (`--dry-run` performs zero serial writes and requires no commercial license):
+1. Preview planned CH9329 Mode 0 hex frames first (Free Core `--dry-run` performs zero serial writes):
    ```bash
    uvcpipe key --keys f2 --modifiers lctrl --hold-ms 50 --sim --dry-run --json
    uvcpipe type --text "boot" --delay-ms 10 --sim --dry-run --json
    uvcpipe mouse --abs 640,360 --screen 1280,720 --button left --wheel 0 --sim --dry-run --json
    uvcpipe mouse --rel 12,-8 --button none --sim --dry-run --json
    ```
-2. Execute live HID input from non-TTY agent pipelines with explicit `--yes`:
+2. Execute live HID input (`Pro` license or `OSS=1`) from non-TTY agent pipelines with explicit `--yes`:
    ```bash
    uvcpipe key --keys enter --port /dev/ttyUSB0 --baud 9600 --yes --json
    ```
-3. Immediately release all held keys and mouse buttons at any time (Free; alias `restore`):
+3. Immediately release all held keys and mouse buttons at any time (Free Core; alias `restore`):
    ```bash
    uvcpipe release-all --sim --yes --json
    uvcpipe restore --sim --dry-run --json
@@ -72,7 +72,7 @@ uvcpipe --help --json
   - `license`: `[status|activate|validate|deactivate] [--key <polar_key>] [--force]` (`--key` on `activate`/`validate` or via `UVCPIPE_LICENSE_KEY`; `--force` clears local cache when remote Polar deactivation is unreachable)
   - `mcp`: `[--sim] [--fixture <path>] [--dry-run]` (`--dry-run` forces `dry_run: true` for all MCP HID calls)
 
-## Commercial Licensing (Polar.sh)
+## Commercial Licensing (Polar.sh — Required Only for Live HID Writes)
 Checkout ($19 one-time, `UVCP` key prefix, 3 activations): <https://buy.polar.sh/polar_cl_ZYe4DgatGrujYxoXUQ80f2zwwuM71Jspoxdew1Iac1c>
 ```bash
 uvcpipe license status --json
@@ -83,7 +83,7 @@ uvcpipe license deactivate --force --json
 ```
 
 ## Native MCP Mode (`uvcpipe mcp`)
-Newline-delimited JSON-RPC 2.0 on `stdin`/`stdout`, negotiating `protocolVersion` `"2025-03-26"` or `"2024-11-05"`, silent on notifications without `"id"`. Every `inputSchema` sets `additionalProperties: false`, sets MCP tool `annotations`, and all 4 HID tools default `dry_run` to `true`:
+Newline-delimited JSON-RPC 2.0 on `stdin`/`stdout`, negotiating `protocolVersion` `"2025-03-26"` or `"2024-11-05"`, silent on notifications without `"id"`. `uvcpipe_probe`, `uvcpipe_capture_frame`, `uvcpipe_hid_release_all`, and all `dry_run: true` HID calls work free without a license; `dry_run: false` HID writes require Pro (`UVCP`) or `OSS=1`. Every `inputSchema` sets `additionalProperties: false` and MCP tool `annotations`:
 
 | Tool | Required Args | Optional Args & Defaults | Behavior |
 |---|---|---|---|
@@ -95,8 +95,8 @@ Newline-delimited JSON-RPC 2.0 on `stdin`/`stdout`, negotiating `protocolVersion
 | `uvcpipe_hid_release_all` | none | `serial_port`, `baud` (`9600`), `sim`, `dry_run` (`true`) | Emits 3 CH9329 release-all packets (`0x02`, `0x04`, `0x05`). |
 
 ## Requirements, Environment Variables & Honest Limits
-- **Environment**: `UVCPIPE_CONFIG_DIR` (directory containing `license.json` for commercial `capture`, `view`, live HID, and `mcp` modes; falls back to `XDG_CONFIG_HOME/uvcpipe`, `~/.config/uvcpipe`, or `%LOCALAPPDATA%\uvcpipe`), `UVCPIPE_LICENSE_KEY` (validated online via `/validate`), `UVCPIPE_POLAR_API_URL` (HTTPS or loopback HTTP override for Polar API), `UVCPIPE_NO_TCC_PROMPT=1` (macOS non-interactive Camera TCC fail-closed `exit 4`).
-- **Limits**: Built and verified with `--sim`, `--fixture`, loopback HTTP/TCP mocks, PTY signals, and ASan/UBSan suites across macOS `arm64`, Linux `x86_64`, and Windows `x86_64` CI; physical USB UVC dongles and CH9329 cables require host OS camera/serial permissions.
+- **Environment**: `UVCPIPE_CONFIG_DIR` (directory for `license.json`; falls back to `XDG_CONFIG_HOME/uvcpipe`, `~/.config/uvcpipe`, or `%LOCALAPPDATA%\uvcpipe`), `UVCPIPE_LICENSE_KEY` (validated online via `/validate`), `UVCPIPE_POLAR_API_URL` (HTTPS or loopback HTTP override), `UVCPIPE_NO_TCC_PROMPT=1` (macOS non-interactive Camera TCC fail-closed `exit 4`).
+- **Limits**: Verified with `--sim`, `--fixture`, loopback HTTP/TCP mocks, PTY signals, and ASan/UBSan suites across macOS `arm64`, Linux `x86_64`, and Windows `x86_64` CI; physical USB UVC dongles and CH9329 cables require host OS camera/serial permissions.
 
 ## Exit Codes
-- `0` ok | `1` runtime/I/O error | `2` usage/validation/non-TTY confirm required | `3` hardware unavailable | `4` OS permission or symlink (`lstat`) denied | `5` commercial license required/invalid (bypassed in `-DOSS_EDITION`) | `130` interrupted (`SIGINT`/`SIGTERM`) after HID release
+- `0` ok | `1` runtime/I/O error | `2` usage/validation/non-TTY confirm required | `3` hardware unavailable | `4` OS permission or symlink (`lstat`) denied | `5` Pro license required for live HID (bypassed in `-DOSS_EDITION`) | `130` interrupted (`SIGINT`/`SIGTERM`) after HID release

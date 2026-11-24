@@ -1,13 +1,13 @@
 # uvcpipe (`uvcpipe`)
 
-> Clean-room C17 cross-platform (macOS, Linux, Windows) USB UVC HDMI capture, localhost live MJPEG viewer, CH9329 serial HID controller, and stdio MCP server (230,528 bytes on macOS arm64; 207,056 bytes on Linux x86_64).
+> Clean-room C17 cross-platform (macOS, Linux, Windows) USB UVC HDMI capture, localhost live MJPEG KVM viewer, CH9329 serial HID controller, and stdio MCP server (230,528 bytes on macOS arm64; 207,056 bytes on Linux x86_64; 199,168 bytes on Windows x86_64).
 
 ## Capabilities
-- **UVC HDMI Capture & Live Viewer ("Eyes")**: `probe` (AVFoundation / V4L2 / Media Foundation), `capture` (`--format jpeg|ppm|base64`, `--out` atomic `lstat`-guarded writes), and `view` (`127.0.0.1` HTTP/1.1 `/`, `/stream.mjpeg`, `/frame.jpg`, `/status.json`, `--port 0`, `Host`/`Origin` `403` DNS-rebinding guard, CSP, `nosniff`), plus `--sim` and `--fixture` modes.
+- **UVC HDMI Capture & Live Viewer ("Free Core Eyes")**: `probe` (AVFoundation / V4L2 / Media Foundation), `capture` (`--format jpeg|ppm|base64`, `--out` atomic `lstat`-guarded writes), and `view` (`127.0.0.1` HTTP/1.1 `/`, `/stream.mjpeg`, `/frame.jpg`, `/status.json`, `--port 0`, `Host`/`Origin` `403` DNS-rebinding guard, CSP, `nosniff`), plus `--sim` and `--fixture` modes.
 - **CH9329 Serial HID Control ("Hands")**: `key` (Page `0x07` BIOS keys F1-F12/Del/Esc/Enter/Arrows + modifiers), `type` (US-ASCII), `mouse` (`--abs x,y --screen w,h` or `--rel dx,dy`, `--button`, `--wheel`, auto button press-hold-release), and `release-all` (`restore`) with probe-before-write, `--dry-run` zero-TX packet preview, non-TTY `--yes` gate, monotonic sleep waits, and `SIGINT`/`SIGTERM` release-all cleanup.
 - **AI-Agent Native**: `--describe` capability JSON (`9` commands, `30` flags), `--json` envelope (`schema_version: 1`), deterministic exit codes (`0..5, 130`), `SKILL.md` (`name: uvcpipe`), `server.json` (`io.github.raydeoliveira/uvcpipe`), `glama.json`, and stdio JSON-RPC 2.0 `uvcpipe mcp` (`2025-03-26` / `2024-11-05`, tool annotations, `dry_run: true` default).
 
 ## Install & Licensing
 - Homebrew: `brew install raydeoliveira/tap/uvcpipe` (macOS arm64 & Linux x86_64) or release archives (`.tar.gz`, `.mcpb`, `.zip` + `99-uvcpipe.rules` udev rules).
-- Free Core: `probe`, `release-all`/`restore`, `license`, `--dry-run` HID previews, `--describe`, `--help`, `--version`.
-- Commercial Pro (`$19` one-time at https://buy.polar.sh/polar_cl_ZYe4DgatGrujYxoXUQ80f2zwwuM71Jspoxdew1Iac1c, `uvcpipe license activate --key <KEY>`, `UVCPIPE_LICENSE_KEY`, `UVCPIPE_POLAR_API_URL`, `license.json` in `UVCPIPE_CONFIG_DIR` or `~/.config/uvcpipe`, or `-DOSS_EDITION` via `make OSS=1`): `capture`, `view`, `mcp`, and live (`!dry_run`) `key`/`type`/`mouse`.
+- Free Core (no license required): `probe`, `capture`, `view`, `release-all`/`restore`, `license`, `--dry-run` HID previews, read-only/dry-run `mcp`, `--describe`, `--help`, `--version`.
+- Commercial Pro (`$19` one-time at https://buy.polar.sh/polar_cl_ZYe4DgatGrujYxoXUQ80f2zwwuM71Jspoxdew1Iac1c, `uvcpipe license activate --key <KEY>`, `UVCPIPE_LICENSE_KEY`, `UVCPIPE_POLAR_API_URL`, `license.json` in `UVCPIPE_CONFIG_DIR` or `~/.config/uvcpipe`, or `-DOSS_EDITION` via `make OSS=1`): live (`!dry_run`) `key`/`type`/`mouse` CLI writes and MCP `dry_run: false` HID writes.

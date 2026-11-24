@@ -1,21 +1,37 @@
 # uvcpipe
 
-> **Product Hub:** [raymonddeoliveira.com/software#uvcpipe](https://www.raymonddeoliveira.com/software#uvcpipe) · **Buy uvcpipe Pro ($19):** [Polar Checkout](https://buy.polar.sh/polar_cl_ZYe4DgatGrujYxoXUQ80f2zwwuM71Jspoxdew1Iac1c) · **Glama MCP:** [glama.ai/mcp/servers/raydeoliveira/uvcpipe](https://glama.ai/mcp/servers/raydeoliveira/uvcpipe) · **Official MCP Registry:** [io.github.raydeoliveira/uvcpipe](https://registry.modelcontextprotocol.io/v0.1/servers?search=raydeoliveira/uvcpipe) · **Free Core:** `brew install raydeoliveira/tap/uvcpipe`
+> **Product Hub:** [raymonddeoliveira.com/software#uvcpipe](https://www.raymonddeoliveira.com/software#uvcpipe) · **Buy Pro Live HID ($19):** [Polar Checkout](https://buy.polar.sh/polar_cl_ZYe4DgatGrujYxoXUQ80f2zwwuM71Jspoxdew1Iac1c) · **Glama MCP:** [glama.ai/mcp/servers/raydeoliveira/uvcpipe](https://glama.ai/mcp/servers/raydeoliveira/uvcpipe) · **Official MCP Registry:** [io.github.raydeoliveira/uvcpipe](https://registry.modelcontextprotocol.io/v0.1/servers?search=raydeoliveira/uvcpipe) · **Free Core:** `brew install raydeoliveira/tap/uvcpipe`
 
-Clean-room C17 CLI, localhost live MJPEG viewer, and stdio MCP server for USB UVC HDMI capture dongles (MS2109/MS2130, ShadowCast, Cam Link) and CH9329 USB-serial HID cables across macOS, Linux, and Windows.
+Clean-room C17 CLI, localhost live MJPEG viewer, and stdio MCP server turning a ~$15 USB UVC HDMI capture dongle (MS2109/MS2130, ShadowCast, Cam Link) and a ~$5 CH9329 USB-serial HID cable into bare-metal BIOS and OS eyes and hands across macOS, Linux, and Windows.
 
-Measured stripped release sizes and cold start: **230,528 bytes (~225 KB)** on macOS `arm64` (**19.45 ms** average `--version` cold start across 10 runs) and **207,056 bytes (~202 KB)** on Linux `x86_64`, with zero third-party runtime dependencies.
+**Free Eyes, Paid Hands (`v0.2.0`):** `probe`, HDMI frame `capture`, the localhost live `view` MJPEG browser KVM, `release-all`, `--dry-run` HID packet previews, and read-only/dry-run `uvcpipe mcp` work **free without a license key**. A one-time **$19** Pro key (`UVCP`, up to 3 devices) or offline `OSS=1` source build unlocks live CH9329 HID keyboard/mouse writes (`key`, `type`, `mouse`, and MCP `dry_run: false`).
 
-## What It Does / What It Does Not Do
+Measured stripped release sizes: **230,528 bytes (~225 KB)** on macOS `arm64` (**19.45 ms** avg cold start), **207,056 bytes (~202 KB)** on Linux `x86_64`, and **199,168 bytes (~195 KB)** on Windows `x86_64`, with zero runtime dependencies.
 
-| Capability | Supported | Notes / Limits |
-|---|---|---|
-| UVC discovery & capture (`probe`, `capture`) | Yes | AVFoundation (macOS `activeFormat` timing lock), V4L2 `/dev/video*` MJPEG/YUYV/RGB24 (Linux), Media Foundation MJPEG/YUY2/BGR24->RGB24 (Windows), plus deterministic `--sim` and `--fixture` (JPEG / P6 PPM `<= 32 MiB`). Outputs `jpeg`, `ppm` (uncompressed sources only; MJPEG-to-PPM exits `2`), or `base64`. |
-| Localhost live viewer (`view`) | Yes | Loopback-only `127.0.0.1` / `localhost` HTTP/1.1 server (`/`, `/stream.mjpeg`, `/frame.jpg`, `/status.json`, `--port 0`) with an `8192`-byte header cap, `300 ms` request deadline, `Host`/`Origin` DNS-rebinding `403` filter, `X-Content-Type-Options: nosniff`, and strict CSP. |
-| CH9329 serial HID (`key`, `type`, `mouse`, `release-all`/`restore`) | Yes | Mode 0 `0x57 0xAB` protocol (`9600`–`115200` baud), USB HID Page `0x07` BIOS keys (`F1`–`F12`, `Del`, `Esc`, `Enter`, arrows), US-ASCII typing, absolute (`0..4095`) and relative (`-127..127`) mouse press-hold-release, monotonic `sleep_ms` waits, `--dry-run` zero-TX preview, non-TTY `--yes` gate, and `SIGINT`/`SIGTERM` release-all. |
-| AI-agent CLI & stdio MCP (`--describe`, `--json`, `mcp`) | Yes | Single-line `schema_version: 1` JSON envelopes and newline-delimited JSON-RPC 2.0 `uvcpipe mcp` negotiating `"2025-03-26"` or `"2024-11-05"` across 6 strict-schema tools with MCP tool `annotations` and `dry_run: true` default on all HID tools. |
-| Commercial Pro license lifecycle (`license`) | Yes | `uvcpipe license status \| activate --key <KEY> \| validate \| deactivate [--force]` backed by Polar.sh HTTPS (or loopback HTTP for tests), storing cache (`0600`) with mandatory `validated_at` timestamp and 14-day offline grace. |
-| Kernel drivers / unattached physical hardware checks | No | Zero kexts or vendor SDKs. Automated verification runs C17 ASan+UBSan suites, loopback HTTP/PTY tests, Polar loopback E2E, and 89/89 `--sim`/`--fixture` E2E tests on macOS `arm64`, Linux `x86_64`, and Windows `x86_64` CI; physical dongle/cable exchanges depend on host hardware and OS permissions. |
+## ~$20 Hardware Bill of Materials
+
+1. **Video Capture ("Eyes") — ~$10–$15**: Any USB 2.0/3.0 UVC HDMI capture dongle based on **MS2109** / **MS2130** (or Genki ShadowCast, Elgato Cam Link). Connect target machine HDMI out → capture dongle → host USB port.
+2. **Keyboard & Mouse Cable ("Hands") — ~$5**: A **CH9329** USB-to-USB HID serial bridge cable (default Mode 0 `0x57 0xAB` @ `9600`–`115200` baud). Connect serial end to host USB (`/dev/cu.usbserial-*`, `/dev/ttyUSB0`, `COMx`) and HID USB-A end to target BIOS/PC.
+
+## 10-Second AI Agent Quickstart (`uvcpipe mcp`)
+
+Connect Claude Code, Cursor, Codex, or Antigravity with zero license required to inspect devices, capture target HDMI frames, and preview `--dry-run` keystrokes:
+
+```bash
+brew install raydeoliveira/tap/uvcpipe
+claude mcp add uvcpipe -- uvcpipe mcp
+```
+
+Or open `uvcpipe-0.2.0-macos-arm64.mcpb` in Claude Desktop, or copy an entry from [mcp-configs.json](packaging/mcp-configs.json).
+
+## Free Core vs. $19 Pro vs. Alternatives
+
+| Tool | Hardware + SW Cost | Target Control Scope | Scriptable `--json` + MCP | Binary Footprint |
+|---|---|---|---|---|
+| **uvcpipe Free Core** | ~$15–$20 cables + **$0** | `probe`, HDMI `capture`, `view` MJPEG KVM, `--dry-run` HID, `release-all`, free capture/dry-run `mcp` | Yes (`--describe`, MCP `2025-03-26`) | ~194–225 KB C17 |
+| **uvcpipe Pro** | ~$20 cables + **$19 one-time** | Adds live CH9329 `key`, `type`, `mouse` & MCP `dry_run: false` (3 devices, 14d offline cache) | Yes (same single binary) | ~194–225 KB C17 |
+| Dedicated IP-KVM Box | $90–$300 hardware | Web UI / VNC / ATX hardware appliance | Rare / proprietary HTTP | Separate Linux SBC |
+| OBS / `ffplay` | ~$15 capture dongle | Desktop GUI video preview only (no HID or MCP) | No CLI/HID/MCP | ~100+ MB + deps |
 
 ## Install & Uninstall
 
@@ -25,59 +41,55 @@ brew install raydeoliveira/tap/uvcpipe
 brew uninstall uvcpipe
 ```
 
-### Release Archives & Client Bundles
-- macOS `arm64`: `uvcpipe-0.1.0-macos-arm64.tar.gz` and one-click Claude Desktop `.mcpb` (`uvcpipe-0.1.0-macos-arm64.mcpb`)
-- Linux `x86_64`: `uvcpipe-0.1.0-linux-x86_64.tar.gz` (includes [99-uvcpipe.rules](packaging/udev/99-uvcpipe.rules) for non-root `/dev/video*` & `/dev/ttyUSB*` access)
-- Windows `x86_64`: `uvcpipe-0.1.0-windows-x86_64.zip` (MSYS2 UCRT64 static C runtime + Media Foundation / Win32 serial)
-- Ready-to-paste MCP client snippets: [mcp-configs.json](packaging/mcp-configs.json)
+### Checksum-Verified Release Archives (`v0.2.0`)
+Download from [GitHub Releases](https://github.com/raydeoliveira/uvcpipe/releases/tag/v0.2.0) and verify with `SHA256SUMS.txt`:
+- **macOS `arm64`**: `uvcpipe-0.2.0-macos-arm64.tar.gz` and one-click Claude Desktop bundle `uvcpipe-0.2.0-macos-arm64.mcpb`
+  ```bash
+  curl -fsSLO https://github.com/raydeoliveira/uvcpipe/releases/download/v0.2.0/uvcpipe-0.2.0-macos-arm64.tar.gz
+  curl -fsSLO https://github.com/raydeoliveira/uvcpipe/releases/download/v0.2.0/SHA256SUMS.txt
+  shasum -a 256 -c SHA256SUMS.txt --ignore-missing
+  tar -xzf uvcpipe-0.2.0-macos-arm64.tar.gz
+  ```
+- **Linux `x86_64`**: `uvcpipe-0.2.0-linux-x86_64.tar.gz` (includes [99-uvcpipe.rules](packaging/udev/99-uvcpipe.rules) for non-root `/dev/video*` & `/dev/ttyUSB*` access)
+- **Windows `x86_64`**: `uvcpipe-0.2.0-windows-x86_64.zip` (`uvcpipe.exe`, MSYS2 UCRT64 static C runtime + Media Foundation)
 
-### Build From Source (macOS, Linux, Windows MSYS2 UCRT64)
+### Build From Source (Commercial or Offline OSS Edition)
 ```bash
 make release               # Commercial build (.build/uvcpipe)
 make release OSS=1         # Open-source build (-DOSS_EDITION)
 make test                  # ASan + UBSan C, Polar E2E, and CLI/MCP suites
 ```
 
-## Quick Start (Human & `--json` Agent Usage)
+## Quick Start (CLI & Live Viewer)
 
-Inspect version, capability manifest, simulated hardware probe, and `--dry-run` HID packets:
+Free Core — inspect devices, capture an HDMI frame, start the loopback KVM viewer, and preview HID hex packets:
 ```bash
-uvcpipe --version --json
-uvcpipe probe --sim --json
+uvcpipe probe --json
+uvcpipe capture --width 1280 --height 720 --format jpeg --out /tmp/bios.jpg --json
+uvcpipe view --port 0 --json
 uvcpipe key --keys f2 --sim --dry-run --json
 ```
 
-Activate a Commercial Pro license, capture a simulated frame, and start the localhost MJPEG viewer:
+Unlock Pro live HID keyboard/mouse writes (`$19` one-time at [Polar.sh](https://buy.polar.sh/polar_cl_ZYe4DgatGrujYxoXUQ80f2zwwuM71Jspoxdew1Iac1c)):
 ```bash
 uvcpipe license activate --key UVCP-XXXX-XXXX-XXXX --json
-uvcpipe capture --sim --format jpeg --out /tmp/bios.jpg --json
-uvcpipe view --sim --port 0 --max-frames 30 --json
+uvcpipe key --keys f2 --port /dev/ttyUSB0 --yes --json
 ```
 
-Run as a stdio MCP server (with `--dry-run` enforcing safe HID previews):
-```bash
-uvcpipe mcp --sim --dry-run
-```
+## Safety & Honest Limits
 
-## Safety & Rollback
+1. **Probe Before Write**: Live HID commands verify `CMD_GET_INFO` before transmitting key or mouse packets.
+2. **Non-TTY Guard & Dry-Run**: Live `key`, `type`, `mouse`, and `release-all` exit `2` on non-TTY `stdin` without `--yes` or `--dry-run`. MCP HID tools default `dry_run` to `true`; `mouse --button <btn>` sends press, interruptible monotonic hold, and button-release automatically.
+3. **Symlink, Reparse & DNS-Rebinding Guards**: Snapshot `--out` and `license.json` reads check `lstat()` (`FILE_ATTRIBUTE_REPARSE_POINT` on Windows) and exit `4` on symlinks. `view` binds only to `127.0.0.1`/`localhost` with an `8192`-byte header cap, `300 ms` deadline, `Host`/`Origin` `403` filter, `nosniff`, and CSP.
+4. **Signal Cleanup & Hardware Scope**: `SIGINT`/`SIGTERM` aborts serial/V4L2 waits cleanly, releases held CH9329 inputs, and exits `130`. macOS/Linux/Windows CI verifies ASan+UBSan suites, loopback Polar E2E, PTY signal cleanup, and `89/89` `--sim`/`--fixture` E2E tests; physical capture/HID exchanges require attached hardware and OS camera/serial permissions (`exit 4` on macOS TCC deny / Linux `EACCES` / Windows `E_ACCESSDENIED`).
 
-1. **Probe Before Write**: Live HID commands open the target CH9329 port and verify `CMD_GET_INFO` before transmitting key or mouse reports.
-2. **Non-TTY Guard & Dry-Run**: Live `key`, `type`, `mouse`, and `release-all` commands fail closed with exit `2` on non-TTY `stdin` unless `--yes` or `--dry-run` is passed. All MCP HID tools default `dry_run` to `true`, and `mouse --button <btn>` sends press, interruptible hold, and button-release packets automatically.
-3. **Symlink, Reparse & DNS-Rebinding Guards**: Snapshot `--out` and `license.json` reads check `lstat()` (`FILE_ATTRIBUTE_REPARSE_POINT` on Windows) and refuse symlinks with exit `4`. `view` binds only to `127.0.0.1` / `localhost` and rejects non-loopback or duplicate `Host` and non-loopback `Origin` headers with `403`.
-4. **Signal Cleanup & Permissions**: `SIGINT`/`SIGTERM` aborts interruptible serial/V4L2 waits cleanly, releases held CH9329 inputs, and exits `130`. Denied macOS Camera TCC (`UVCPIPE_NO_TCC_PROMPT=1`), Linux `EACCES`, or Windows `E_ACCESSDENIED` exits `4`.
+## Hardware Reports & Exit Codes
 
-## Exit Codes & CLI Reference
+Tested a specific HDMI capture dongle (MS2109, MS2130, ShadowCast, Cam Link) or CH9329 cable? Share your `uvcpipe probe --json` output in [Hardware Compatibility Issues](https://github.com/raydeoliveira/uvcpipe/issues/new?template=hardware-report.md).
 
-Run `uvcpipe --help` for usage or `uvcpipe --describe` for the JSON capability manifest (see [SKILL.md](SKILL.md) for CLI and MCP schemas):
-- `0`: Success
-- `1`: Runtime, I/O, JPEG, or CH9329 protocol error
-- `2`: Invalid usage, non-TTY mutating HID without `--yes`, non-loopback `--bind`, invalid `UVCPIPE_POLAR_API_URL`, or MJPEG-to-PPM conversion
-- `3`: Hardware unavailable (no UVC dongle or CH9329 cable found)
-- `4`: OS permission denied or symlink/reparse target refused
-- `5`: Commercial license required or invalid (`license.json` in `UVCPIPE_CONFIG_DIR` or `~/.config/uvcpipe`; bypassed when built with `OSS=1`)
-- `130`: Interrupted (`SIGINT`/`SIGTERM`) after HID release-all cleanup
+Run `uvcpipe --describe` or inspect [SKILL.md](SKILL.md) for JSON schemas. Exit codes: `0` ok, `1` runtime/I/O error, `2` usage/validation/non-TTY, `3` hardware unavailable, `4` permission/symlink denied, `5` Pro license required for live HID, `130` interrupted (`SIGINT`/`SIGTERM`) after HID release.
 
 ## License & Security
 
-- License: [LICENSE](LICENSE) (Free Core + `$19` Commercial Pro via [Polar.sh](https://buy.polar.sh/polar_cl_ZYe4DgatGrujYxoXUQ80f2zwwuM71Jspoxdew1Iac1c); `-DOSS_EDITION` compile switch unlocks all capabilities offline)
+- License: [LICENSE](LICENSE) (Free Core Eyes + `$19` Pro Live HID via [Polar.sh](https://buy.polar.sh/polar_cl_ZYe4DgatGrujYxoXUQ80f2zwwuM71Jspoxdew1Iac1c); `-DOSS_EDITION` compile switch unlocks all capabilities offline)
 - Security policy: [SECURITY.md](SECURITY.md)

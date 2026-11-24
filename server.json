@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.raydeoliveira/uvcpipe",
   "title": "uvcpipe",
-  "description": "USB UVC HDMI capture, local MJPEG viewer, and CH9329 serial HID KVM CLI & MCP server.",
-  "version": "0.1.0",
+  "description": "Bare-metal BIOS/OS KVM eyes & hands: USB UVC HDMI capture (MS2109/MS2130) + CH9329 HID MCP server.",
+  "version": "0.2.0",
   "websiteUrl": "https://github.com/raydeoliveira/uvcpipe",
   "repository": {
     "url": "https://github.com/raydeoliveira/uvcpipe",
@@ -12,22 +12,22 @@
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/raydeoliveira/uvcpipe/releases/download/v0.1.0/uvcpipe-0.1.0-macos-arm64.mcpb",
-      "version": "0.1.0",
-      "fileSha256": "d1b3c3209a135de53493538633cda840dee84fe1d8f3cbbf312e972978311e71",
+      "identifier": "https://github.com/raydeoliveira/uvcpipe/releases/download/v0.2.0/uvcpipe-0.2.0-macos-arm64.mcpb",
+      "version": "0.2.0",
+      "fileSha256": "55d2948a5ab9d051c0ecd3988b4deaa778e2f5c74e692ed83d6f3540d21e34e9",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
           "name": "UVCPIPE_LICENSE_KEY",
-          "description": "Optional Polar.sh Commercial Pro key unlocking capture, view, live HID writes, and mcp.",
+          "description": "Optional Polar.sh Commercial Pro key unlocking live CH9329 HID writes (dry_run: false); capture and probe work free.",
           "isRequired": false,
           "isSecret": true
         },
         {
           "name": "UVCPIPE_CONFIG_DIR",
-          "description": "Optional directory containing license.json for commercial capture, view, HID write, and mcp modes.",
+          "description": "Optional directory containing license.json for cached live HID Pro activation.",
           "isRequired": false,
           "isSecret": false
         },
