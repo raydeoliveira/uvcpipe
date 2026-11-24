@@ -1,0 +1,23 @@
+uvcpipe Commercial Software License Agreement (EULA)
+Version 1.0 — Effective 2026
+
+Copyright (c) 2026 Raymond de Oliveira. All rights reserved.
+
+1. GRANT OF LICENSE
+uvcpipe is distributed under two tiers:
+(a) Free Core Tier: device probing (probe), emergency HID release
+    (release-all / restore), --dry-run HID packet previews, --describe,
+    --help, and --version.
+(b) Commercial Pro Tier (Valid license.json Required): HDMI frame capture
+    (capture), localhost live MJPEG viewer (view), live CH9329 serial HID
+    writes (key, type, mouse), and the stdio MCP server (mcp). Open-source
+    builds compiled with -DOSS_EDITION unlock all capabilities offline.
+
+2. RESTRICTIONS
+Except where permitted under an explicit MIT License distribution by the
+copyright holder, redistribution, resale, or license bypass is prohibited.
+
+3. HARDWARE SAFETY & DISCLAIMER OF WARRANTY
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. THE COPYRIGHT HOLDER IS NOT LIABLE FOR ANY HARDWARE, DISPLAY, OR
+INPUT MALFUNCTION ARISING FROM USE OF THIS SOFTWARE.

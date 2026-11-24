@@ -1,0 +1,49 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.raydeoliveira/uvcpipe",
+  "title": "uvcpipe",
+  "description": "USB UVC HDMI capture, local MJPEG viewer, and CH9329 serial HID KVM CLI & MCP server.",
+  "version": "0.1.0",
+  "websiteUrl": "https://github.com/raydeoliveira/uvcpipe",
+  "repository": {
+    "url": "https://github.com/raydeoliveira/uvcpipe",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/raydeoliveira/uvcpipe/releases/download/v0.1.0/uvcpipe-0.1.0-macos-arm64.mcpb",
+      "version": "0.1.0",
+      "fileSha256": "d1b3c3209a135de53493538633cda840dee84fe1d8f3cbbf312e972978311e71",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "UVCPIPE_LICENSE_KEY",
+          "description": "Optional Polar.sh Commercial Pro key unlocking capture, view, live HID writes, and mcp.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "UVCPIPE_CONFIG_DIR",
+          "description": "Optional directory containing license.json for commercial capture, view, HID write, and mcp modes.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "UVCPIPE_POLAR_API_URL",
+          "description": "Optional Polar.sh API base URL override (HTTPS or loopback HTTP only) for license activation and validation.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "UVCPIPE_NO_TCC_PROMPT",
+          "description": "Set to 1 on macOS to fail closed (exit 4) instead of prompting for Camera TCC access.",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "claude_desktop": {
+    "mcpServers": {
+      "uvcpipe": {
+        "command": "uvcpipe",
+        "args": ["mcp"],
+        "env": {
+          "UVCPIPE_LICENSE_KEY": "OPTIONAL_PRO_LICENSE_KEY"
+        }
+      }
+    }
+  },
+  "claude_code": {
+    "command": "claude mcp add uvcpipe -e UVCPIPE_LICENSE_KEY=OPTIONAL_PRO_LICENSE_KEY -- uvcpipe mcp"
+  },
+  "codex": {
+    "toml_snippet": "[mcp_servers.uvcpipe]\ncommand = \"uvcpipe\"\nargs = [\"mcp\"]\nenv = { UVCPIPE_LICENSE_KEY = \"OPTIONAL_PRO_LICENSE_KEY\" }"
+  },
+  "cursor": {
+    "mcpServers": {
+      "uvcpipe": {
+        "command": "uvcpipe",
+        "args": ["mcp"],
+        "env": {
+          "UVCPIPE_LICENSE_KEY": "OPTIONAL_PRO_LICENSE_KEY"
+        }
+      }
+    }
+  },
+  "antigravity": {
+    "mcpServers": {
+      "uvcpipe": {
+        "command": "uvcpipe",
+        "args": ["mcp"],
+        "env": {
+          "UVCPIPE_LICENSE_KEY": "OPTIONAL_PRO_LICENSE_KEY"
+        }
+      }
+    }
+  }
+}

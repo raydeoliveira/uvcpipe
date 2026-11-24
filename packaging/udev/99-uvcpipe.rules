@@ -1,0 +1,24 @@
+# uvcpipe Linux udev rules — grant non-root access to common USB UVC HDMI capture dongles and USB-serial CH9329 HID cables.
+# Install:
+#   sudo cp 99-uvcpipe.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+# Also ensure your user belongs to the video and dialout groups:
+#   sudo usermod -aG video,dialout "$USER"
+
+# USB UVC HDMI Capture Dongles
+SUBSYSTEM=="usb", ATTR{idVendor}=="534d", ATTR{idProduct}=="2109", GROUP="video", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTR{idVendor}=="345f", ATTR{idProduct}=="2130", GROUP="video", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTR{idVendor}=="0fd9", ATTR{idProduct}=="0066", GROUP="video", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTR{idVendor}=="3188", ATTR{idProduct}=="1000", GROUP="video", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="534d", ATTRS{idProduct}=="2109", GROUP="video", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="345f", ATTRS{idProduct}=="2130", GROUP="video", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="0066", GROUP="video", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="3188", ATTRS{idProduct}=="1000", GROUP="video", MODE="0660", TAG+="uaccess"
+
+# USB-Serial & CH9329 HID Cables (WCH CH340/CH341/CH9329, FTDI FT232R, Silicon Labs CP210x)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", GROUP="dialout", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="5523", GROUP="dialout", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="e029", GROUP="dialout", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", GROUP="dialout", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", GROUP="dialout", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTR{idVendor}=="1a86", ATTR{idProduct}=="e029", GROUP="plugdev", MODE="0660", TAG+="uaccess"
