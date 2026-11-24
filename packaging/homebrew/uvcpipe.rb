@@ -42,7 +42,7 @@ class Uvcpipe < Formula
     describe_json = shell_output("#{bin}/uvcpipe --describe")
     assert_match "\"schema_version\":1", describe_json
     assert_match "\"sim\":true", shell_output("#{bin}/uvcpipe probe --sim --json")
-    assert_match "\"format\":\"jpeg\"", shell_output("#{bin}/uvcpipe capture --sim --format base64 --json")
+    assert_match "\"format\":\"base64\"", shell_output("#{bin}/uvcpipe capture --sim --format base64 --json")
     assert_match "\"dry_run\":true", shell_output("#{bin}/uvcpipe key --keys f2 --sim --dry-run --json")
     assert_match "\"tier\":", shell_output("#{bin}/uvcpipe license status --json")
   end
