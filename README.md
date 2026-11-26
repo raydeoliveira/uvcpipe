@@ -24,6 +24,10 @@ uvcpipe probe --sim --json
 
 Look for `sim-uvc-0` in `data.uvc_devices`. To capture a 160 × 90 test image, run `uvcpipe capture --sim --width 160 --height 90 --format base64 --json`. The image is in `data.data_base64`. Both checks run locally and require no license key.
 
+Simulated HDMI capture from UVCpipe v0.2.0, 160 × 90 pixels.
+
+![Simulated HDMI test frame with vertical color bars](docs/simulated-hdmi-160x90.jpg)
+
 To give your agent the CLI instructions, install the [UVCpipe skill](SKILL.md) from your project directory. Ask it to run `uvcpipe probe --sim --json` to list the simulated device.
 
 ```sh
