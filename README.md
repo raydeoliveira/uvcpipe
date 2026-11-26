@@ -24,6 +24,12 @@ uvcpipe probe --sim --json
 
 Look for `sim-uvc-0` in `data.uvc_devices`. To capture a 160 × 90 test image, run `uvcpipe capture --sim --width 160 --height 90 --format base64 --json`. The image is in `data.data_base64`. Both checks run locally and require no license key.
 
+To give your agent the CLI instructions, install the [UVCpipe skill](SKILL.md) from your project directory. Ask it to run `uvcpipe probe --sim --json` to list the simulated device.
+
+```sh
+npx skills add raydeoliveira/uvcpipe
+```
+
 ## Connect an MCP client
 
 Connect Claude Code, Cursor, Codex, or Antigravity with zero license required to inspect devices, capture target HDMI frames, and preview `--dry-run` keystrokes:
@@ -32,7 +38,7 @@ Connect Claude Code, Cursor, Codex, or Antigravity with zero license required to
 claude mcp add uvcpipe -- uvcpipe mcp
 ```
 
-Claude Desktop on Apple Silicon can open the [v0.2.0 desktop bundle](https://github.com/raydeoliveira/uvcpipe/releases/download/v0.2.0/uvcpipe-0.2.0-macos-arm64.mcpb). Other clients can use the [configuration examples](packaging/mcp-configs.json). The [UVCpipe agent skill](SKILL.md) documents the CLI and its JSON output.
+Claude Desktop on Apple Silicon can open the [v0.2.0 desktop bundle](https://github.com/raydeoliveira/uvcpipe/releases/download/v0.2.0/uvcpipe-0.2.0-macos-arm64.mcpb). Other clients can use the [configuration examples](packaging/mcp-configs.json).
 
 ## Free Core vs. $19 Pro vs. Alternatives
 
