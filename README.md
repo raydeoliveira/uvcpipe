@@ -13,16 +13,26 @@ Measured stripped release sizes: **230,528 bytes (~225 KB)** on macOS `arm64` (*
 1. **Video Capture ("Eyes") — ~$10–$15**: Any USB 2.0/3.0 UVC HDMI capture dongle based on **MS2109** / **MS2130** (or Genki ShadowCast, Elgato Cam Link). Connect target machine HDMI out → capture dongle → host USB port.
 2. **Keyboard & Mouse Cable ("Hands") — ~$5**: A **CH9329** USB-to-USB HID serial bridge cable (default Mode 0 `0x57 0xAB` @ `9600`–`115200` baud). Connect serial end to host USB (`/dev/cu.usbserial-*`, `/dev/ttyUSB0`, `COMx`) and HID USB-A end to target BIOS/PC.
 
-## 10-Second AI Agent Quickstart (`uvcpipe mcp`)
+## Try HDMI capture without a dongle
+
+Install UVCpipe on the computer where you will connect the capture dongle. On Apple Silicon macOS or x86_64 Linux, use Homebrew. Windows x86_64 users can extract `uvcpipe.exe` from the [release archive](https://github.com/raydeoliveira/uvcpipe/releases/download/v0.2.0/uvcpipe-0.2.0-windows-x86_64.zip).
+
+```sh
+brew install raydeoliveira/tap/uvcpipe
+uvcpipe probe --sim --json
+```
+
+Look for `sim-uvc-0` in `data.uvc_devices`. To capture a 160 × 90 test image, run `uvcpipe capture --sim --width 160 --height 90 --format base64 --json`. The image is in `data.data_base64`. Both checks run locally and require no license key.
+
+## Connect an MCP client
 
 Connect Claude Code, Cursor, Codex, or Antigravity with zero license required to inspect devices, capture target HDMI frames, and preview `--dry-run` keystrokes:
 
 ```bash
-brew install raydeoliveira/tap/uvcpipe
 claude mcp add uvcpipe -- uvcpipe mcp
 ```
 
-Or open `uvcpipe-0.2.0-macos-arm64.mcpb` in Claude Desktop, or copy an entry from [mcp-configs.json](packaging/mcp-configs.json).
+Claude Desktop on Apple Silicon can open the [v0.2.0 desktop bundle](https://github.com/raydeoliveira/uvcpipe/releases/download/v0.2.0/uvcpipe-0.2.0-macos-arm64.mcpb). Other clients can use the [configuration examples](packaging/mcp-configs.json). The [UVCpipe agent skill](SKILL.md) documents the CLI and its JSON output.
 
 ## Free Core vs. $19 Pro vs. Alternatives
 
@@ -53,7 +63,10 @@ Download from [GitHub Releases](https://github.com/raydeoliveira/uvcpipe/release
 - **Linux `x86_64`**: `uvcpipe-0.2.0-linux-x86_64.tar.gz` (includes [99-uvcpipe.rules](packaging/udev/99-uvcpipe.rules) for non-root `/dev/video*` & `/dev/ttyUSB*` access)
 - **Windows `x86_64`**: `uvcpipe-0.2.0-windows-x86_64.zip` (`uvcpipe.exe`, MSYS2 UCRT64 static C runtime + Media Foundation)
 
-### Build From Source (Commercial or Offline OSS Edition)
+### Build from a source checkout
+
+The public repository distributes release binaries and client configuration. The following commands apply to a separate checkout containing the UVCpipe Makefile.
+
 ```bash
 make release               # Commercial build (.build/uvcpipe)
 make release OSS=1         # Open-source build (-DOSS_EDITION)

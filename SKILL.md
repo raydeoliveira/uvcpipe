@@ -11,16 +11,15 @@ description: >-
 
 # Skill: uvcpipe (`uvcpipe`)
 
-## Install & Discovery
+## Install and verify the CLI
+
+Use Homebrew on Apple Silicon macOS or x86_64 Linux. On Windows x86_64, extract `uvcpipe.exe` from the [published archive](https://github.com/raydeoliveira/uvcpipe/releases/download/v0.2.0/uvcpipe-0.2.0-windows-x86_64.zip). The [release page](https://github.com/raydeoliveira/uvcpipe/releases/tag/v0.2.0) includes downloads for all three platforms and SHA-256 checksums.
+
 ```bash
 brew install raydeoliveira/tap/uvcpipe
-# Or build from source:
-make -C projects/uvcpipe release
-# Inspect capability manifest and build metadata:
-uvcpipe --describe
-uvcpipe --version --json
-uvcpipe --help --json
 ```
+
+Run `uvcpipe probe --sim --json` to check the install without a camera or dongle. The simulated capture device appears as `sim-uvc-0` in `data.uvc_devices`. Run `uvcpipe --describe` for the command and flag schemas.
 
 ## Safe Probe, Capture & Live Viewer Workflow (Free Core)
 1. Discover attached UVC dongles and CH9329 cables (or deterministic `--sim` / `--fixture` devices):
