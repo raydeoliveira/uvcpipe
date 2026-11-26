@@ -1,17 +1,27 @@
 uvcpipe Commercial Software License Agreement (EULA)
-Version 1.0 — Effective 2026
+Version 1.1 — November 26, 2026
 
 Copyright (c) 2026 Raymond de Oliveira. All rights reserved.
 
 1. GRANT OF LICENSE
-uvcpipe is distributed under two tiers:
-(a) Free Core Tier: device probing (probe), emergency HID release
-    (release-all / restore), --dry-run HID packet previews, --describe,
-    --help, and --version.
-(b) Commercial Pro Tier (Valid license.json Required): HDMI frame capture
-    (capture), localhost live MJPEG viewer (view), live CH9329 serial HID
-    writes (key, type, mouse), and the stdio MCP server (mcp). Open-source
-    builds compiled with -DOSS_EDITION unlock all capabilities offline.
+This grant applies from the original release date of uvcpipe v0.2.0 to all
+official copies of that version, including previously downloaded archives
+and the MCP bundle. It supersedes the Free Core and Commercial Pro feature
+lists in the Version 1.0 agreement included with those copies.
+
+(a) Free Core Tier. You may use device probing (probe), local HDMI frame
+    capture from a USB UVC device or simulation (capture), and the
+    localhost MJPEG viewer (view) without a license key. This tier also
+    includes --describe, --help, --version, emergency HID release
+    (release-all / restore), and --dry-run HID packet previews. You may
+    use these read-only, dry-run and emergency-release functions through
+    the stdio MCP server (mcp) without a key.
+(b) Commercial Pro Tier. A one-time USD $19 Pro license with a valid
+    license.json permits live CH9329 keyboard and mouse input through
+    the optional supported hardware (key, type and mouse), including
+    those input commands through MCP with dry_run set to false.
+
+Open-source builds compiled with -DOSS_EDITION unlock all capabilities offline.
 
 2. RESTRICTIONS
 Except where permitted under an explicit MIT License distribution by the

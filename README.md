@@ -4,7 +4,7 @@
 
 Clean-room C17 CLI, localhost live MJPEG viewer, and stdio MCP server turning a ~$15 USB UVC HDMI capture dongle (MS2109/MS2130, ShadowCast, Cam Link) and a ~$5 CH9329 USB-serial HID cable into bare-metal BIOS and OS eyes and hands across macOS, Linux, and Windows.
 
-**Free Eyes, Paid Hands (`v0.2.0`):** `probe`, HDMI frame `capture`, the localhost live `view` MJPEG browser KVM, `release-all`, `--dry-run` HID packet previews, and read-only/dry-run `uvcpipe mcp` work **free without a license key**. A one-time **$19** Pro key (`UVCP`, up to 3 devices) or offline `OSS=1` source build unlocks live CH9329 HID keyboard/mouse writes (`key`, `type`, `mouse`, and MCP `dry_run: false`).
+**Free local HDMI capture and viewing.** Capture frames from a USB UVC dongle or simulation, open the localhost MJPEG viewer, and use read-only MCP tools, HID previews or emergency release without a key. Upgrade to the one-time USD $19 Pro license (up to three devices) to send live keyboard and mouse input over the optional CH9329 cable from the CLI or MCP. The license covers original v0.2.0 downloads, including copies containing the older terms. [UVCpipe license](LICENSE)
 
 Measured stripped release sizes: **230,528 bytes (~225 KB)** on macOS `arm64` (**19.45 ms** avg cold start), **207,056 bytes (~202 KB)** on Linux `x86_64`, and **199,168 bytes (~195 KB)** on Windows `x86_64`, with zero runtime dependencies.
 
